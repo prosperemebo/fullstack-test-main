@@ -4,7 +4,7 @@
   "description": "Fullstack test FrontEnd",
   "private": true,
   "scripts": {
-    "start": "vite --port 4000",
+    "start": "vite --port 3000",
     "build": "vite build --target=es2020",
     "preview": "vite preview",
     "default-theme": "node src/theme/ant.config.default.js && npx tailwindcss init --full src/theme/tailwind.config.default.js",
