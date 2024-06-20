@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Progress, Row } from 'antd';
+import { Button, Card, Flex, Modal, Progress, Row } from 'antd';
 import { useState } from 'react';
 import NewCategoryModal from './NewCategoryModal';
 import useEntriesContext from '../../../helpers/EntriesContext';
@@ -40,13 +40,30 @@ const CategorySummary = () => {
 };
 
 const Category = ({ category, onEdit }) => {
+  const { deleteCategory } = useEntriesContext();
   const textColor = category.balance <= 0 ? 'text-red-600' : '';
   const percent = Math.max(0, (category.balance / category.budget) * 100);
   const progressStatus = category.balance <= 0 ? 'exception' : 'normal';
 
-  const [loading, setLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const editCategory = () => onEdit(category);
+
+  const deleteCategoryHandler = () => {
+    Modal.confirm({
+      title: `Delete ${category.name}?`,
+      content: 'Are you sure you want to delete this category? This action cannot be reversed!',
+      okText: 'Delete Permanentely',
+      okButtonProps: { danger: true },
+      onOk: async () => {
+        setIsDeleting(true);
+
+        await deleteCategory(category._id);
+
+        setIsDeleting(false);
+      }
+    });
+  };
 
   return (
     <div className="mb-8" key={category._id}>
@@ -63,7 +80,7 @@ const Category = ({ category, onEdit }) => {
         <Button type="link" onClick={editCategory}>
           Edit
         </Button>
-        <Button type="link" danger>
+        <Button type="link" danger loading={isDeleting} onClick={deleteCategoryHandler}>
           Delete
         </Button>
       </Row>

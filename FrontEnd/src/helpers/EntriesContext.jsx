@@ -81,8 +81,8 @@ export const EntriesProvider = ({ children }) => {
     return true;
   }, []);
 
-  const deleteCategory = useCallback(async (id, category) => {
-    await Api.delete(`/categories/${id}`, category);
+  const deleteCategory = useCallback(async id => {
+    await Api.delete(`/categories/${id}`);
 
     fetchData();
 
@@ -102,7 +102,8 @@ export const EntriesProvider = ({ children }) => {
       addEntry,
       addCategory,
       editCategory,
-      editEntry
+      editEntry,
+      deleteCategory
     }),
     [entries, entriesStats, categoriesStats]
   );
