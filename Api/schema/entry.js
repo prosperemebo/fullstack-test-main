@@ -11,5 +11,16 @@ module.exports = {
     },
     required: ['amount', 'description'],
     additionalProperties: false
+  },
+  updateEntry: {
+    $id: 'updateEntry',
+    type: 'object',
+    properties: {
+      amount: { type: 'number' },
+      description: { type: 'string' },
+      category: { oneOf: [{ $ref: 'category' }, { type: 'null' }] },
+      date: { type: 'string' }
+    },
+    additionalProperties: false
   }
 };

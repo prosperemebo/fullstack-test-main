@@ -8,4 +8,10 @@ const router = express.Router();
 
 router.route('/').get(isAuth, controller.get).post(validator('createEntry'), isAuth, controller.create);
 
+router
+  .route('/:id')
+  .get(isAuth, controller.getById)
+  .patch(validator('updateEntry'), isAuth, controller.update)
+  .delete(isAuth, controller.delete);
+
 module.exports = router;
