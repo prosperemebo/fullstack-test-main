@@ -4,10 +4,19 @@ import NewCategoryModal from './NewCategoryModal';
 import useEntriesContext from '../../../helpers/EntriesContext';
 
 const CategorySummary = () => {
-  const { categoriesStats } = useEntriesContext();
+  const { categoriesStats, deleteCategory } = useEntriesContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const toggleModalHandler = () => setIsModalOpen(state => !state);
+  const toggleModalHandler = () => {
+    setSelectedCategory(null);
+    setIsModalOpen(state => !state);
+  };
+
+  const editCategory = category => {
+    setSelectedCategory(category);
+    setIsModalOpen(true);
+  };
 
   return (
     <>
@@ -22,18 +31,22 @@ const CategorySummary = () => {
         }
       >
         {categoriesStats.map(category => (
-          <Category category={category} key={category._id} />
+          <Category category={category} key={category._id} onEdit={editCategory} />
         ))}
       </Card>
-      <NewCategoryModal isOpen={isModalOpen} handleCancel={toggleModalHandler} />
+      <NewCategoryModal isOpen={isModalOpen} handleCancel={toggleModalHandler} updateCategory={selectedCategory} />
     </>
   );
 };
 
-const Category = ({ category }) => {
+const Category = ({ category, onEdit }) => {
   const textColor = category.balance <= 0 ? 'text-red-600' : '';
   const percent = Math.max(0, (category.balance / category.budget) * 100);
   const progressStatus = category.balance <= 0 ? 'exception' : 'normal';
+
+  const [loading, setLoading] = useState(false);
+
+  const editCategory = () => onEdit(category);
 
   return (
     <div className="mb-8" key={category._id}>
@@ -47,7 +60,9 @@ const Category = ({ category }) => {
       </Flex>
       <Progress percent={percent} status={progressStatus} />
       <Row className="mt-2">
-        <Button type="link">Edit</Button>
+        <Button type="link" onClick={editCategory}>
+          Edit
+        </Button>
         <Button type="link" danger>
           Delete
         </Button>

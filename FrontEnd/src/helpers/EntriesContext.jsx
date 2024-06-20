@@ -49,16 +49,37 @@ export const EntriesProvider = ({ children }) => {
     await Promise.all([fetchEntries(), fetchEntriesStats(), fetchCategoriesStats()]);
   }, []);
 
-  const addEntry = useCallback(
-    async entry => {
-      const response = await Api.post('/entries', entry);
+  const addEntry = useCallback(async entry => {
+    const response = await Api.post('/entries', entry);
 
-      fetchData();
+    fetchData();
 
-      return true;
-    },
-    [entries]
-  );
+    return true;
+  }, []);
+
+  const addCategory = useCallback(async category => {
+    const response = await Api.post('/categories', category);
+
+    fetchData();
+
+    return true;
+  }, []);
+
+  const editCategory = useCallback(async (id, category) => {
+    const response = await Api.patch(`/categories/${id}`, category);
+
+    fetchData();
+
+    return true;
+  }, []);
+
+  const deleteCategory = useCallback(async (id, category) => {
+    const response = await Api.delete(`/categories/${id}`, category);
+
+    fetchData();
+
+    return true;
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -70,7 +91,9 @@ export const EntriesProvider = ({ children }) => {
       viewState,
       entriesStats,
       categoriesStats,
-      addEntry
+      addEntry,
+      addCategory,
+      editCategory
     }),
     [entries, entriesStats, categoriesStats]
   );

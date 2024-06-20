@@ -2,24 +2,15 @@ import { Form, Modal, Radio, Input, Select, Button } from 'antd';
 import { useMemo, useState } from 'react';
 import useEntriesContext, { EntryType } from '../../../helpers/EntriesContext';
 
-const NewEntryModal = ({ isOpen, handleCancel }) => {
+const NewEntryModal = ({ isOpen, handleCancel, updateEntry }) => {
   const { categoriesStats, addEntry } = useEntriesContext();
 
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [entryType, setEntryType] = useState(EntryType.Expense);
-  const [selectedCategory, setSelectedCategory] = useState('null');
-  const [amount, setAmount] = useState('');
-  const [description, setDescription] = useState('');
 
-  const onEntryTypeChange = formData => {
-    if (formData.type) setEntryType(formData.type);
-
-    if (formData.amount) setAmount(formData.amount);
-
-    if (formData.description) setDescription(formData.description);
-
-    if (formData.category) setSelectedCategory(formData.category);
+  const onFormValueChange = ({ type }) => {
+    if (type) setEntryType(type);
   };
 
   const handleOk = async () => {
@@ -33,11 +24,14 @@ const NewEntryModal = ({ isOpen, handleCancel }) => {
     };
 
     if (values.type === EntryType.Expense) {
-      entry.category = selectedCategory;
+      entry.category = values.category;
+    } else {
+      entry.category = null;
     }
 
     await addEntry(entry);
     setLoading(false);
+    form.resetFields();
     handleCancel();
   };
 
@@ -71,7 +65,7 @@ const NewEntryModal = ({ isOpen, handleCancel }) => {
         initialValues={{
           type: entryType
         }}
-        onValuesChange={onEntryTypeChange}
+        onValuesChange={onFormValueChange}
       >
         <Form.Item label="Entry Type" name="type">
           <Radio.Group value={entryType}>
@@ -80,14 +74,14 @@ const NewEntryModal = ({ isOpen, handleCancel }) => {
           </Radio.Group>
         </Form.Item>
         <Form.Item label="Amount" name="amount">
-          <Input placeholder="3000" type="number" value={amount} />
+          <Input placeholder="3000" type="number" />
         </Form.Item>
         <Form.Item label="Description" name="description">
-          <Input placeholder="New iPhone" value={description} />
+          <Input placeholder="New iPhone" />
         </Form.Item>
-        {entryType === 'expense' && (
+        {entryType === EntryType.Expense && (
           <Form.Item label="Category" name="category">
-            <Select value={selectedCategory} options={categoryOptions} />
+            <Select options={categoryOptions} placeholder="Select Category" />
           </Form.Item>
         )}
       </Form>
