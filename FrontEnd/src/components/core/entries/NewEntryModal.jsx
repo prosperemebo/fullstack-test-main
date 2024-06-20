@@ -31,17 +31,19 @@ const NewEntryModal = ({ isOpen, handleCancel }) => {
         <Form.Item label="Description">
           <Input placeholder="New iPhone" />
         </Form.Item>
-        <Form.Item label="Category">
-          <Select
-            value="null"
-            options={[
-              { value: 'null', label: <span>Select Category</span> },
-              { value: '12345', label: <span>Food</span> },
-              { value: '12345', label: <span>Transport</span> },
-              { value: '12345', label: <span>Food</span> }
-            ]}
-          />
-        </Form.Item>
+        {entryType === 'expense' && (
+          <Form.Item label="Category">
+            <Select
+              value="null"
+              options={[
+                { value: 'null', label: <span>Select Category</span> },
+                { value: '12345', label: <span>Food</span> },
+                { value: '12345', label: <span>Transport</span> },
+                { value: '12345', label: <span>Food</span> }
+              ]}
+            />
+          </Form.Item>
+        )}
       </Form>
     </Modal>
   );
