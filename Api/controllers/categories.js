@@ -80,10 +80,16 @@ module.exports.getCategoryStats = async (req, { locals: { user } }, next) => {
         }
       },
       {
+        $match: {
+          $or: [{ entries: { $ne: null } }, { entries: { $exists: false } }]
+        }
+      },
+      {
         $group: {
           _id: '$_id',
           name: { $first: '$name' },
           budget: { $first: '$budget' },
+          count: { $sum: { $cond: [{ $ifNull: ['$entries', false] }, 1, 0] } },
           totalEntryAmount: { $sum: { $ifNull: ['$entries.amount', 0] } }
         }
       },
@@ -92,6 +98,7 @@ module.exports.getCategoryStats = async (req, { locals: { user } }, next) => {
           _id: 1,
           name: 1,
           budget: 1,
+          count: 1,
           balance: { $subtract: ['$budget', '$totalEntryAmount'] }
         }
       },
