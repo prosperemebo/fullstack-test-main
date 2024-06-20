@@ -1,26 +1,46 @@
-import { Card, Flex, Progress } from 'antd';
+import { Button, Card, Flex, Progress } from 'antd';
+import { useState } from 'react';
+import NewCategoryModal from './NewCategoryModal';
 
-const CategorySummary = () => (
-  <Card bordered={false} className="height-auto mb-4" title="Categories">
-    <div className="mb-8">
-      <Flex justify="space-between" className="mb-2">
-        <p className="mb-0 text-lg font-semibold">Food (3) </p>
-        <p className="mb-0">
-          <span className="text-lg font-semibold">300 USD</span> Left
-        </p>
-      </Flex>
-      <Progress percent={30} />
-    </div>
-    <div className="mb-0">
-      <Flex justify="space-between" className="mb-2">
-        <p className="mb-0 text-lg font-semibold">Food (3) </p>
-        <p className="mb-0">
-          <span className="text-lg font-semibold">300 USD</span> Left
-        </p>
-      </Flex>
-      <Progress percent={30} />
-    </div>
-  </Card>
-);
+const CategorySummary = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModalHandler = () => setIsModalOpen(state => !state);
+
+  return (
+    <>
+      <Card
+        bordered={false}
+        className="height-auto mb-4"
+        title="Categories"
+        extra={
+          <Button type="primary" onClick={toggleModalHandler}>
+            New Category
+          </Button>
+        }
+      >
+        <div className="mb-8">
+          <Flex justify="space-between" className="mb-2">
+            <p className="mb-0 text-lg font-semibold">Food (3) </p>
+            <p className="mb-0">
+              <span className="text-lg font-semibold">300 USD</span> Left
+            </p>
+          </Flex>
+          <Progress percent={30} />
+        </div>
+        <div className="mb-0">
+          <Flex justify="space-between" className="mb-2">
+            <p className="mb-0 text-lg font-semibold">Food (3) </p>
+            <p className="mb-0">
+              <span className="text-lg font-semibold">300 USD</span> Left
+            </p>
+          </Flex>
+          <Progress percent={30} />
+        </div>
+      </Card>
+      <NewCategoryModal isOpen={isModalOpen} handleCancel={toggleModalHandler} />
+    </>
+  );
+};
 
 export default CategorySummary;
