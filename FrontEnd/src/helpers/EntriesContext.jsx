@@ -17,7 +17,7 @@ export const EntriesProvider = ({ children }) => {
   //   const [categoriesStatus, setCategoriesStatus] = useState(ViewState.idle);
 
   const [entriesStats, setEntriesStats] = useState(null);
-  const [categoriesStats, setCategoriesStats] = useState(null);
+  const [categoriesStats, setCategoriesStats] = useState([]);
 
   const fetchEntries = useCallback(async () => {
     setViewState(ViewState.loading);
