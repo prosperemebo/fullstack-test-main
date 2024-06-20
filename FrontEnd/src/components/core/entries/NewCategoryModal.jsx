@@ -29,7 +29,7 @@ const NewCategoryModal = ({ isOpen, handleCancel, updateCategory }) => {
 
   useEffect(() => {
     form.setFieldsValue({ name: updateCategory?.name || '', budget: updateCategory?.budget || 0 });
-  }, [updateCategory]);
+  }, [updateCategory, form]);
 
   return (
     <Modal
@@ -45,12 +45,7 @@ const NewCategoryModal = ({ isOpen, handleCancel, updateCategory }) => {
         </Button>
       ]}
     >
-      <Form
-        layout="vertical"
-        form={form}
-        initialValues={{ name: updateCategory?.name || '', budget: updateCategory?.budget || 0 }}
-        key={updateCategory?._id}
-      >
+      <Form layout="vertical" form={form} key={updateCategory?._id}>
         <Form.Item label="Name" name="name">
           <Input placeholder="Food" />
         </Form.Item>

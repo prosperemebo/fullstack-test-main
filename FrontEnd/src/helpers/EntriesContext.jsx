@@ -50,7 +50,7 @@ export const EntriesProvider = ({ children }) => {
   }, []);
 
   const addEntry = useCallback(async entry => {
-    const response = await Api.post('/entries', entry);
+    await Api.post('/entries', entry);
 
     fetchData();
 
@@ -58,7 +58,7 @@ export const EntriesProvider = ({ children }) => {
   }, []);
 
   const addCategory = useCallback(async category => {
-    const response = await Api.post('/categories', category);
+    await Api.post('/categories', category);
 
     fetchData();
 
@@ -66,7 +66,15 @@ export const EntriesProvider = ({ children }) => {
   }, []);
 
   const editCategory = useCallback(async (id, category) => {
-    const response = await Api.patch(`/categories/${id}`, category);
+    await Api.patch(`/categories/${id}`, category);
+
+    fetchData();
+
+    return true;
+  }, []);
+
+  const editEntry = useCallback(async (id, entry) => {
+    await Api.patch(`/entries/${id}`, entry);
 
     fetchData();
 
@@ -74,7 +82,7 @@ export const EntriesProvider = ({ children }) => {
   }, []);
 
   const deleteCategory = useCallback(async (id, category) => {
-    const response = await Api.delete(`/categories/${id}`, category);
+    await Api.delete(`/categories/${id}`, category);
 
     fetchData();
 
@@ -93,7 +101,8 @@ export const EntriesProvider = ({ children }) => {
       categoriesStats,
       addEntry,
       addCategory,
-      editCategory
+      editCategory,
+      editEntry
     }),
     [entries, entriesStats, categoriesStats]
   );

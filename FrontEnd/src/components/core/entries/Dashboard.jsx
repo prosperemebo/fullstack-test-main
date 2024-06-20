@@ -2,9 +2,8 @@ import { Col, Row } from 'antd';
 import React from 'react';
 import useEntriesContext, { ViewState } from '../../../helpers/EntriesContext';
 import ContentPanel from '../layout/ContentPanel';
-import EntryHeader from '../layout/EntryHeader';
-import Entry from './Entry';
 import Stats from './Stats';
+import EntriesList from './EntriesList';
 
 const Dashboard = () => {
   const entriesContext = useEntriesContext();
@@ -13,10 +12,7 @@ const Dashboard = () => {
     <ContentPanel title="Fullstack Test" loading={entriesContext.viewState === ViewState.loading}>
       <Row gutter="16">
         <Col span={16}>
-          <EntryHeader />
-          {entriesContext.entries.map(entry => (
-            <Entry key={entry._id} entry={entry} />
-          ))}
+          <EntriesList />
         </Col>
         <Col span={8}>
           <Stats />

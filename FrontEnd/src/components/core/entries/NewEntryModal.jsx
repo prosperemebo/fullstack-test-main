@@ -1,9 +1,9 @@
 import { Form, Modal, Radio, Input, Select, Button } from 'antd';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useEntriesContext, { EntryType } from '../../../helpers/EntriesContext';
 
 const NewEntryModal = ({ isOpen, handleCancel, updateEntry }) => {
-  const { categoriesStats, addEntry } = useEntriesContext();
+  const { categoriesStats, addEntry, editEntry } = useEntriesContext();
 
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
@@ -29,7 +29,12 @@ const NewEntryModal = ({ isOpen, handleCancel, updateEntry }) => {
       entry.category = null;
     }
 
-    await addEntry(entry);
+    if (updateEntry) {
+      await editEntry(updateEntry._id, entry);
+    } else {
+      await addEntry(entry);
+    }
+
     setLoading(false);
     form.resetFields();
     handleCancel();
@@ -45,6 +50,18 @@ const NewEntryModal = ({ isOpen, handleCancel, updateEntry }) => {
     return [defaultOption, ...options];
   }, [categoriesStats]);
 
+  useEffect(() => {
+    if (!updateEntry) return;
+
+    form.setFieldsValue({
+      type: updateEntry.type,
+      amount: updateEntry.amount,
+      description: updateEntry.description,
+      category: updateEntry?.category?._id
+    });
+    setEntryType(updateEntry.type);
+  }, [updateEntry, form]);
+
   return (
     <Modal
       open={isOpen}
@@ -55,7 +72,7 @@ const NewEntryModal = ({ isOpen, handleCancel, updateEntry }) => {
           Cancel
         </Button>,
         <Button key="link" type="primary" loading={loading} onClick={handleOk}>
-          Add
+          {updateEntry ? 'Update' : 'Add'}
         </Button>
       ]}
     >
@@ -66,6 +83,7 @@ const NewEntryModal = ({ isOpen, handleCancel, updateEntry }) => {
           type: entryType
         }}
         onValuesChange={onFormValueChange}
+        key={updateEntry?._id}
       >
         <Form.Item label="Entry Type" name="type">
           <Radio.Group value={entryType}>
