@@ -25,13 +25,19 @@ const schema = Schema(
   }
 );
 
+schema.virtual('entries', {
+  ref: 'Entry',
+  foreignField: 'category',
+  localField: '_id'
+});
+
 schema.index({ name: 1, user: 1 }, { unique: true });
 
 schema.plugin(dbFields, {
   fields: {
     public: ['_id', 'name', 'budget', 'user', 'createdAt'],
-    listing: ['_id', 'name', 'budget', 'user', 'createdAt'],
-    category: ['_id', 'name', 'budget', 'user', 'updatedAt', 'createdAt']
+    listing: ['_id', 'name', 'budget', 'createdAt'],
+    category: ['_id', 'name', 'budget', 'entries', 'updatedAt', 'createdAt']
   }
 });
 

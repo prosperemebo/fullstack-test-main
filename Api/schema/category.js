@@ -4,8 +4,7 @@ module.exports = {
     type: 'object',
     properties: {
       budget: { type: 'number' },
-      name: { type: 'string' },
-      user: { $ref: 'user' }
+      name: { type: 'string' }
     },
     required: ['name'],
     additionalProperties: false
@@ -15,10 +14,18 @@ module.exports = {
     type: 'object',
     properties: {
       budget: { type: 'number' },
-      name: { type: 'string' },
-      user: { $ref: 'user' }
+      name: { type: 'string' }
     },
     required: ['name'],
+    additionalProperties: false
+  },
+  updateCategory: {
+    $id: 'updateCategory',
+    type: 'object',
+    properties: {
+      budget: { type: 'number' },
+      name: { type: 'string' }
+    },
     additionalProperties: false
   }
 };

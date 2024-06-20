@@ -5,7 +5,7 @@ module.exports = {
     properties: {
       amount: { type: 'number' },
       description: { type: 'string' },
-      category: { oneOf: [{ $ref: 'category' }, { type: 'null' }] },
+      category: { oneOf: [{ $ref: 'objectId' }, { type: 'null' }] },
       user: { $ref: 'user' },
       date: { type: 'string' }
     },
@@ -18,7 +18,7 @@ module.exports = {
     properties: {
       amount: { type: 'number' },
       description: { type: 'string' },
-      category: { oneOf: [{ $ref: 'category' }, { type: 'null' }] },
+      category: { oneOf: [{ $ref: 'objectId' }, { type: 'null' }] },
       date: { type: 'string' }
     },
     additionalProperties: false

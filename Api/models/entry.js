@@ -36,6 +36,15 @@ const schema = Schema(
   }
 );
 
+schema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'category',
+    select: '_id name budget'
+  });
+
+  next();
+});
+
 schema.plugin(dbFields, {
   fields: {
     public: ['_id', 'amount', 'description', 'category', 'date', 'createdAt'],
