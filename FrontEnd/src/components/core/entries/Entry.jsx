@@ -1,13 +1,32 @@
-import React from 'react';
-import { Button, Card, Row } from 'antd';
-import { EntryType } from '../../../helpers/EntriesContext';
+import React, { useState } from 'react';
+import { Button, Card, Modal, Row } from 'antd';
+import useEntriesContext, { EntryType } from '../../../helpers/EntriesContext';
 
 const Entry = ({ entry, onEdit }) => {
+  const { deleteEntry } = useEntriesContext();
   const sign = entry.type === EntryType.Income ? '+' : '-';
   const textColor = entry.type === EntryType.Income ? 'text-green-600' : 'text-red-600';
   const date = new Date(entry.date).toDateString();
 
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const editEntry = () => onEdit(entry);
+
+  const deleteEntryHandler = () => {
+    Modal.confirm({
+      title: 'Delete Entry?',
+      content: 'Are you sure you want to delete this entry? This action cannot be reversed!',
+      okText: 'Delete Permanentely',
+      okButtonProps: { danger: true },
+      onOk: async () => {
+        setIsDeleting(true);
+
+        await deleteEntry(entry._id);
+
+        setIsDeleting(false);
+      }
+    });
+  };
 
   return (
     <Card bordered={false} className="height-auto mb-4">
@@ -29,7 +48,7 @@ const Entry = ({ entry, onEdit }) => {
         <Button type="link" onClick={editEntry}>
           Edit
         </Button>
-        <Button type="link" danger>
+        <Button type="link" danger loading={isDeleting} onClick={deleteEntryHandler}>
           Delete
         </Button>
       </Row>

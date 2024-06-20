@@ -11,10 +11,10 @@ const Dashboard = () => {
   return (
     <ContentPanel title="Fullstack Test" loading={entriesContext.viewState === ViewState.loading}>
       <Row gutter="16">
-        <Col span={16}>
+        <Col span={14}>
           <EntriesList />
         </Col>
-        <Col span={8}>
+        <Col span={10}>
           <Stats />
         </Col>
       </Row>

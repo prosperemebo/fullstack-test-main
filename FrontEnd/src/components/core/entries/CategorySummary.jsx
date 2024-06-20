@@ -23,10 +23,10 @@ const CategorySummary = () => {
       <Card
         bordered={false}
         className="height-auto mb-4"
-        title="Categories"
+        title="Budgets"
         extra={
           <Button type="primary" onClick={toggleModalHandler}>
-            New Category
+            New Budget
           </Button>
         }
       >

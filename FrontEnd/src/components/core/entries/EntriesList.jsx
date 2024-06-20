@@ -24,7 +24,7 @@ const EntriesList = () => {
   return (
     <>
       <Row className="mb-6 flex items-center justify-between" wrap={false} align="top">
-        <Text className="m-0 truncate text-xl font-normal leading-none">Entries</Text>
+        <Text className="m-0 truncate text-xl font-normal leading-none">Income and Expenses Entries</Text>
         <Button type="primary" size="large" onClick={toggleEntryModalHandler}>
           Add Entry
         </Button>

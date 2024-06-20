@@ -34,7 +34,7 @@ const NewCategoryModal = ({ isOpen, handleCancel, updateCategory }) => {
   return (
     <Modal
       open={isOpen}
-      title={updateCategory ? 'Edit Category' : 'New Category'}
+      title={updateCategory ? 'Edit Budget' : 'New Budget'}
       onCancel={handleCancel}
       footer={[
         <Button key="back" onClick={handleCancel}>
