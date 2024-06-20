@@ -1,14 +1,10 @@
-import { Button, Card, Row } from 'antd';
 import React from 'react';
-
-export const EntryTypes = {
-  Income: 'income',
-  Expense: 'expense'
-};
+import { Button, Card, Row } from 'antd';
+import { EntryType } from '../../../helpers/EntriesContext';
 
 const Entry = ({ entry }) => {
-  const sign = entry.type === EntryTypes.Income ? '+' : '-';
-  const textColor = entry.type === EntryTypes.Income ? 'text-green-600' : 'text-red-600';
+  const sign = entry.type === EntryType.Income ? '+' : '-';
+  const textColor = entry.type === EntryType.Income ? 'text-green-600' : 'text-red-600';
   const date = new Date(entry.date).toDateString();
 
   return (

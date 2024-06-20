@@ -7,14 +7,16 @@ export const ViewState = {
   loading: 'loading'
 };
 
+export const EntryType = {
+  Income: 'income',
+  Expense: 'expense'
+};
+
 const EntriesContext = createContext({});
 
 export const EntriesProvider = ({ children }) => {
   const [entries, setEntries] = useState([]);
   const [viewState, setViewState] = useState(ViewState.idle);
-
-  //   const [categories, setCategories] = useState([]);
-  //   const [categoriesStatus, setCategoriesStatus] = useState(ViewState.idle);
 
   const [entriesStats, setEntriesStats] = useState(null);
   const [categoriesStats, setCategoriesStats] = useState([]);
@@ -43,10 +45,23 @@ export const EntriesProvider = ({ children }) => {
     setCategoriesStats(response.data);
   }, []);
 
+  const fetchData = useCallback(async () => {
+    await Promise.all([fetchEntries(), fetchEntriesStats(), fetchCategoriesStats()]);
+  }, []);
+
+  const addEntry = useCallback(
+    async entry => {
+      const response = await Api.post('/entries', entry);
+
+      fetchData();
+
+      return true;
+    },
+    [entries]
+  );
+
   useEffect(() => {
-    fetchEntries();
-    fetchEntriesStats();
-    fetchCategoriesStats();
+    fetchData();
   }, []);
 
   const contextValue = useMemo(
@@ -55,7 +70,7 @@ export const EntriesProvider = ({ children }) => {
       viewState,
       entriesStats,
       categoriesStats,
-      fetchEntries
+      addEntry
     }),
     [entries, entriesStats, categoriesStats]
   );
