@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const dbFields = require('../helpers/dbFields');
 
 const { Schema } = mongoose;
 
@@ -34,5 +35,13 @@ const schema = Schema(
     timestamps: true
   }
 );
+
+schema.plugin(dbFields, {
+  fields: {
+    public: ['_id', 'amount', 'description', 'category', 'date', 'createdAt'],
+    listing: ['_id', 'amount', 'description', 'category', 'date', 'createdAt'],
+    entry: ['_id', 'amount', 'description', 'category', 'date', 'createdAt']
+  }
+});
 
 module.exports = mongoose.models.Entry || mongoose.model('Entry', schema);
