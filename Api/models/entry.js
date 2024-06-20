@@ -15,6 +15,10 @@ const schema = Schema(
       minlength: 3,
       maxlength: 128
     },
+    type: {
+      type: String,
+      enum: ['income', 'expense']
+    },
     category: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
@@ -47,9 +51,9 @@ schema.pre(/^find/, function (next) {
 
 schema.plugin(dbFields, {
   fields: {
-    public: ['_id', 'amount', 'description', 'category', 'date', 'createdAt'],
-    listing: ['_id', 'amount', 'description', 'category', 'date', 'createdAt'],
-    entry: ['_id', 'amount', 'description', 'category', 'date', 'createdAt']
+    public: ['_id', 'amount', 'description', 'category', 'type', 'date', 'createdAt'],
+    listing: ['_id', 'amount', 'description', 'category', 'type', 'date', 'createdAt'],
+    entry: ['_id', 'amount', 'description', 'category', 'type', 'date', 'createdAt']
   }
 });
 

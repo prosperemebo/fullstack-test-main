@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Entry = require('../models/entry');
 const { SendData, ServerError, AlreadyExists, NotFound, Unauthorized } = require('../helpers/response');
 const getter = require('../helpers/getter');
@@ -23,6 +24,42 @@ module.exports.create = async (req, { locals: { user } }, next) => {
     return next(SendData(data.response('entry')));
   } catch (err) {
     if (err.code === 11000) return next(AlreadyExists());
+    return next(ServerError(err));
+  }
+};
+
+module.exports.getStats = async ({ params: { id } }, { locals: { user } }, next) => {
+  try {
+    const entries = await Entry.aggregate([
+      {
+        $match: {
+          user: new mongoose.Types.ObjectId(user.id)
+        }
+      },
+      {
+        $group: {
+          _id: '$type',
+          count: { $sum: 1 },
+          totalAmount: { $sum: '$amount' }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          type: '$_id',
+          count: 1,
+          totalAmount: 1
+        }
+      }
+    ]);
+
+    const stats = {
+      income: entries.find(entry => entry.type === 'income') || { count: 0, totalAmount: 0 },
+      expense: entries.find(entry => entry.type === 'expense') || { count: 0, totalAmount: 0 }
+    };
+
+    return next(SendData(stats));
+  } catch (err) {
     return next(ServerError(err));
   }
 };
